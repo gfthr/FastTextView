@@ -1,7 +1,7 @@
 FastTextView
 ============
 
-The best rich editor  (TextView) on IOS platform , should be the fastest , opensourced by gfthr.
+The best rich editor  (TextView) on IOS platform , should be the fastest , opensourced by gfthr (gfthr@sina.com).
 
 FastTextView is inspired by EGOTextView , and made some significant improvement to enchance peformance on large text input speed , changed about 50% code , so named new project FastTextView.
 
