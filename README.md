@@ -26,10 +26,16 @@ This editor is used on the ChinesAll's writing and reading mobile app tangyuan (
 Install
 ============
 1.put FastTextViewLib to the parrael directory, add  FastTextViewLib.xcodeproj to your main project
+
 2.TARGETS->your target->link binary with libraries->add libFastTextViewLib.a
+
 3.PROJECT->header search paths-> ../FastTextViewLib/FastTextViewLib/Class
+
 4.TARGETS->header search paths-> ../FastTextViewLib/FastTextViewLib/Class
+
 5.PROJECT->Other linker Flags ->-all_load
-5.TARGETS->Other linker Flags ->-all_load
+
+6.TARGETS->Other linker Flags ->-all_load
+
 
 that's all!
