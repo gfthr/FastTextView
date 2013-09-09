@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:FastTextViewDemo/FastTextViewDemo.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:FastTextViewLib/FastTextViewLib.xcodeproj">
+   </FileRef>
+</Workspace>

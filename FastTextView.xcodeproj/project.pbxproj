@@ -12,7 +12,6 @@
 		5E64652517C1C8BC0044254E /* FileWrapperObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E64652117C1C8BC0044254E /* FileWrapperObject.m */; };
 		5E64652617C1C8BC0044254E /* NSMutableAttributedString+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E64652317C1C8BC0044254E /* NSMutableAttributedString+TextUtil.m */; };
 		5E64652917C1CBAA0044254E /* NSAttributedString+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E64652817C1CBAA0044254E /* NSAttributedString+TextUtil.m */; };
-		5E64653017C1CD460044254E /* NSNumber+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E64652F17C1CD460044254E /* NSNumber+Helper.m */; };
 		5E68444917A6B6140023E663 /* FastTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E68444817A6B6140023E663 /* FastTextStorage.m */; };
 		5E76544217AAA48700AAAD33 /* CAParagraphLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E76544117AAA48700AAAD33 /* CAParagraphLayer.m */; };
 		5EA4963B17A4FDC700E5DDBE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EA4963A17A4FDC700E5DDBE /* UIKit.framework */; };
@@ -58,8 +57,6 @@
 		5E64652317C1C8BC0044254E /* NSMutableAttributedString+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TextUtil.m"; sourceTree = "<group>"; };
 		5E64652717C1CBAA0044254E /* NSAttributedString+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+TextUtil.h"; sourceTree = "<group>"; };
 		5E64652817C1CBAA0044254E /* NSAttributedString+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+TextUtil.m"; sourceTree = "<group>"; };
-		5E64652E17C1CD460044254E /* NSNumber+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helper.h"; sourceTree = "<group>"; };
-		5E64652F17C1CD460044254E /* NSNumber+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helper.m"; sourceTree = "<group>"; };
 		5E68444717A6B6140023E663 /* FastTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastTextStorage.h; sourceTree = "<group>"; };
 		5E68444817A6B6140023E663 /* FastTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastTextStorage.m; sourceTree = "<group>"; };
 		5E76544017AAA48700AAAD33 /* CAParagraphLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAParagraphLayer.h; sourceTree = "<group>"; };
@@ -188,8 +185,6 @@
 		5EA4965E17A4FF5900E5DDBE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				5E64652E17C1CD460044254E /* NSNumber+Helper.h */,
-				5E64652F17C1CD460044254E /* NSNumber+Helper.m */,
 				5E64652717C1CBAA0044254E /* NSAttributedString+TextUtil.h */,
 				5E64652817C1CBAA0044254E /* NSAttributedString+TextUtil.m */,
 				5E64651E17C1C8BC0044254E /* FastTextView.h */,
@@ -325,7 +320,6 @@
 				5E64652517C1C8BC0044254E /* FileWrapperObject.m in Sources */,
 				5E64652617C1C8BC0044254E /* NSMutableAttributedString+TextUtil.m in Sources */,
 				5E64652917C1CBAA0044254E /* NSAttributedString+TextUtil.m in Sources */,
-				5E64653017C1CD460044254E /* NSNumber+Helper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
