@@ -38,5 +38,7 @@ Install
 
 6.TARGETS->Other linker Flags ->-all_load
 
+7.import framework: QuartzCore.framework,CoreText.framework,AssetsLibrary.framework,CoreGraphics.framework
+
 
 that's all!
