@@ -21,12 +21,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextStorage.m"
-         timestampString = "400395956.969858"
+         timestampString = "401179412.377303"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "529"
-         endingLineNumber = "529"
-         landmarkName = "-editParagrapAttributesInRange:"
+         startingLineNumber = "536"
+         endingLineNumber = "536"
+         landmarkName = "-afterEditParagraphWithOldRangeLength:withChangedParagraphIndex:withString:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -34,12 +34,350 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
-         timestampString = "400467674.277213"
+         timestampString = "402049397.070503"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1262"
-         endingLineNumber = "1262"
+         startingLineNumber = "1316"
+         endingLineNumber = "1316"
          landmarkName = "-applyCaretChangeForIndex:point:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402041283.402256"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "936"
+         endingLineNumber = "936"
+         landmarkName = "-drawContentInRect:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextStorage.m"
+         timestampString = "401169990.242246"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "130"
+         endingLineNumber = "130"
+         landmarkName = "-build:paragraphSizeWidth:paragraphOriginY:paraRange:isBuildLayer:context:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextStorage.m"
+         timestampString = "401179412.377303"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "178"
+         endingLineNumber = "178"
+         landmarkName = "-buildLayer:layer:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextStorage.m"
+         timestampString = "401169863.529886"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "107"
+         endingLineNumber = "107"
+         landmarkName = "-build:paragraphSizeWidth:paragraphOriginY:paraRange:isBuildLayer:context:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402041283.402256"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "951"
+         endingLineNumber = "951"
+         landmarkName = "-drawContentInRect:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextStorage.m"
+         timestampString = "401171380.889466"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "96"
+         endingLineNumber = "96"
+         landmarkName = "-build:paragraphSizeWidth:paragraphOriginY:paraRange:isBuildLayer:context:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextStorage.m"
+         timestampString = "401179412.377303"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "148"
+         endingLineNumber = "148"
+         landmarkName = "-build:paragraphSizeWidth:paragraphOriginY:paraRange:isBuildLayer:context:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextStorage.m"
+         timestampString = "401179412.377303"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "173"
+         endingLineNumber = "173"
+         landmarkName = "-buildLayer:layer:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402041283.402256"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "762"
+         endingLineNumber = "762"
+         landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402041283.402256"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "401"
+         endingLineNumber = "401"
+         landmarkName = "-layoutChange"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402041283.402256"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "783"
+         endingLineNumber = "783"
+         landmarkName = "-drawContentInRect:ctx:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "3459"
+         endingLineNumber = "3459"
+         landmarkName = "-drawLayer:inContext:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "3460"
+         endingLineNumber = "3460"
+         landmarkName = "-drawLayer:inContext:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2113"
+         endingLineNumber = "2113"
+         landmarkName = "-insertText:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "3445"
+         endingLineNumber = "3445"
+         landmarkName = "-refreshView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "3456"
+         endingLineNumber = "3456"
+         landmarkName = "-drawLayer:inContext:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "3443"
+         endingLineNumber = "3443"
+         landmarkName = "-refreshView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1538"
+         endingLineNumber = "1538"
+         landmarkName = "-setFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1336"
+         endingLineNumber = "1336"
+         landmarkName = "-applyCaretChangeForIndex:point:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2084"
+         endingLineNumber = "2084"
+         landmarkName = "-insertText:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewDemo/FastTextViewDemo/DemoViewController.m"
+         timestampString = "402042675.508733"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "199"
+         endingLineNumber = "199"
+         landmarkName = "-insertText:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402042744.243972"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "487"
+         endingLineNumber = "487"
+         landmarkName = "-setAttributedString:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewDemo/FastTextViewDemo/DemoViewController.m"
+         timestampString = "402043673.995465"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "201"
+         endingLineNumber = "201"
+         landmarkName = "-insertText:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2722"
+         endingLineNumber = "2722"
+         landmarkName = "-tap:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "3711"
+         endingLineNumber = "3711"
+         landmarkName = "-screenshotFromCaretFrame:inView:scale:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FastTextViewLib/FastTextViewLib/Class/FastTextView.m"
+         timestampString = "402049397.070503"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1479"
+         endingLineNumber = "1479"
+         landmarkName = "-caretRectForIndex:point:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

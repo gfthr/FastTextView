@@ -158,4 +158,6 @@ enum {
 
 -(void)clearDeleteParagraphs;
 
+-(void)clearCacheLinerefs;
+
 @end

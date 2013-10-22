@@ -88,6 +88,8 @@ static AttributeConfig *readerTitleAttributeConfig = nil;
     
     //CGFloat headIndent= 20.0;
     
+    
+    
         
     
     CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)fontName,

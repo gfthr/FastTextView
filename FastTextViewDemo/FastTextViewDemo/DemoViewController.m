@@ -13,6 +13,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 //#import "ImageAttachmentCell.h"
 #import "SlideAttachmentCell.h"
+#import "EmotionAttachmentCell.h"
 #import <CoreText/CoreText.h>
 #import "UIImage-Extensions.h"
 #import "NSAttributedString+TextUtil.h"
@@ -22,12 +23,18 @@
 #define TABBAR_HEIGHT 49.0f
 #define STATUS_HEIGHT 20.0f
 
+#define TOP_VIEW_HEIGHT 33.0f
+#define TOP_VIEW_WIDTH 48.0f
+
 #define ARRSIZE(a)      (sizeof(a) / sizeof(a[0]))
+
+#define ios7 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
 
 @implementation DemoViewController
 
 @synthesize fastTextView=_fastTextView;
 @synthesize textView=_textView;
+@synthesize topview;
 
 #pragma mark -
 #pragma mark - View lifecycle
@@ -35,22 +42,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if(ios7){
+        origin_y= NAVBAR_HEIGHT+STATUS_HEIGHT;
+    }else{
+        origin_y=0;
+    }
+    
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"UITextView", @"FastTextView", nil]];
     segment.segmentedControlStyle = UISegmentedControlStyleBar;
     [segment addTarget:self action:@selector(segmentChanged:) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = segment;
-//    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]
-//                                             initWithTitle:@"图片"
-//                                             style:UIBarButtonItemStylePlain
-//                                             target:self
-//                                             action:@selector(attachImage:)];
-    
-    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]
-                                            initWithTitle:@"幻灯"
-                                            style:UIBarButtonItemStylePlain
-                                            target:self
-                                            action:@selector(attachSlide:)];
-    
     
     if (_textView==nil) {
         
@@ -69,7 +70,8 @@
     
     if (_fastTextView==nil) {
         
-        FastTextView *view = [[FastTextView alloc] initWithFrame:self.view.bounds];
+        FastTextView *view = [[FastTextView alloc] initWithFrame:CGRectMake(0, origin_y, self.view.bounds.size.width, self.view.bounds.size.height-origin_y)];
+        
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         view.delegate = (id<FastTextViewDelegate>)self;
         view.attributeConfig=[TextConfig editorAttributeConfig];
@@ -77,15 +79,13 @@
         view.placeHolder=@"章节内容";
         [view setFont:[UIFont systemFontOfSize:17]];
         view.pragraghSpaceHeight=15;
+        view.backgroundColor=[UIColor clearColor];
         
         [self.view addSubview:view];
         self.fastTextView = view;
         
-        NSString *default_txt = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"b.txt"];
-        
-        #if TARGET_IPHONE_SIMULATOR
-            default_txt = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"b.txt"];
-        #endif       
+        NSString *default_txt = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"a.txt"];
+       // #endif
         
         NSError *error;
         NSString *base_content=[NSString stringWithContentsOfFile:default_txt encoding:NSUTF8StringEncoding error:&error];
@@ -93,11 +93,14 @@
         NSMutableAttributedString *parseStr=[[NSMutableAttributedString alloc]initWithString:base_content];
         [parseStr addAttributes:[self defaultAttributes] range:NSMakeRange(0, [parseStr length])];
         self.fastTextView.attributedString=parseStr;
-        [view becomeFirstResponder];
+        //[view becomeFirstResponder];
         
     }
      
     [segment setSelectedSegmentIndex:1];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
   
 }
@@ -166,6 +169,7 @@
         self.textView.hidden = YES;
         self.fastTextView.hidden = NO;
         [self.fastTextView becomeFirstResponder];
+        self.view.backgroundColor=[UIColor whiteColor];
         
     }
     
@@ -199,7 +203,7 @@
 
 
 
-- (void)attachSlide:(id)sender;
+- (IBAction)attachSlide:(id)sender;
 {
     //    [self _logScrollInfo:@"fsfsdfsd"];
     //    NSLog(@"editor frame %@",NSStringFromCGRect(_editor.frame));
@@ -248,10 +252,6 @@
         
         
         [UIImageJPEGRepresentation(thumbimg,0.7)writeToFile:pngPath atomically:YES];
-
-        
-        
-        
                 
         UITextRange *selectedTextRange = [_fastTextView selectedTextRange];
         if (!selectedTextRange) {
@@ -340,13 +340,60 @@
                 NSLog(@"error finding asset %@", [error debugDescription]);
             }];
     [self dismissModalViewControllerAnimated:YES];
-    // [[OUIAppController controller] dismissPopoverAnimated:YES];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 {
     [self dismissModalViewControllerAnimated:YES];
-    //[[OUIAppController controller] dismissPopoverAnimated:YES];
+}
+
+
+- (void)_addEmotion:(NSString *)emotionImgName;
+{
+    
+    UITextRange *selectedTextRange = [_fastTextView selectedTextRange];
+    if (!selectedTextRange) {
+        UITextPosition *endOfDocument = [_fastTextView endOfDocument];
+        selectedTextRange = [_fastTextView textRangeFromPosition:endOfDocument toPosition:endOfDocument];
+    }
+    UITextPosition *startPosition = [selectedTextRange start] ; // hold onto this since the edit will drop
+    
+    unichar attachmentCharacter = FastTextAttachmentCharacter;
+    [_fastTextView replaceRange:selectedTextRange withText:[NSString stringWithFormat:@"%@",[NSString stringWithCharacters:&attachmentCharacter length:1]]];
+    
+//    startPosition=[_fastTextView positionFromPosition:startPosition inDirection:UITextLayoutDirectionRight offset:1];
+    UITextPosition *endPosition = [_fastTextView positionFromPosition:startPosition offset:1];
+    selectedTextRange = [_fastTextView textRangeFromPosition:startPosition toPosition:endPosition];
+    
+    
+    NSMutableAttributedString *mutableAttributedString=[_fastTextView.attributedString mutableCopy];
+    
+    NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
+    NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
+    
+    if (en < st) {
+        return;
+    }
+    NSUInteger contentLength = [[_fastTextView.attributedString string] length];
+    if (en > contentLength) {
+        en = contentLength; // but let's not crash
+    }
+    if (st > en)
+        st = en;
+    NSRange cr = [[_fastTextView.attributedString string] rangeOfComposedCharacterSequencesForRange:(NSRange){ st, en - st }];
+    if (cr.location + cr.length > contentLength) {
+        cr.length = ( contentLength - cr.location ); // but let's not crash
+    }
+    
+    FileWrapperObject *fileWp = [[FileWrapperObject alloc] init];
+    [fileWp setFileName:emotionImgName];
+    [fileWp setFilePath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:emotionImgName]];
+    EmotionAttachmentCell *cell = [[EmotionAttachmentCell alloc] initWithFileWrapperObject:fileWp] ;
+    [mutableAttributedString addAttribute: FastTextAttachmentAttributeName value:cell  range:cr];
+    
+    if (mutableAttributedString) {
+        _fastTextView.attributedString = mutableAttributedString;
+    }
 }
 
 
@@ -355,7 +402,7 @@
 #pragma mark Memory Management
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];    
+    [super didReceiveMemoryWarning];
 }
 
 - (void)viewDidUnload {
@@ -374,19 +421,155 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary* info = [notification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGSize keyBoardSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
-    self.fastTextView.frame = CGRectMake(self.fastTextView.frame.origin.x, self.fastTextView.frame.origin.y, self.fastTextView.frame.size.width, [[UIScreen mainScreen] bounds].size.height - NAVBAR_HEIGHT - kbSize.height-STATUS_HEIGHT);
+    self.fastTextView.frame = CGRectMake(self.fastTextView.frame.origin.x, origin_y, self.fastTextView.frame.size.width,self.view.bounds.size.height -origin_y - keyBoardSize.height-TOP_VIEW_HEIGHT );
     
-//    NSLog(@"[[UIScreen mainScreen] bounds].size.height %f kbSize.height %f",[[UIScreen mainScreen] bounds].size.height,kbSize.height);
-    //
-    //    [self _logScrollInfo:@"good"];
+    self.topview.frame = CGRectMake(0, self.fastTextView.frame.origin.y+ self.fastTextView.frame.size.height, self.fastTextView.frame.size.width, TOP_VIEW_HEIGHT);
+    
+    [self.view addSubview:self.topview];
+    [self.view bringSubviewToFront:self.topview];
+    
+
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
-    self.fastTextView.frame = CGRectMake(self.fastTextView.frame.origin.x, self.fastTextView.frame.origin.y, self.fastTextView.frame.size.width, [[UIScreen mainScreen] bounds].size.height-NAVBAR_HEIGHT-TABBAR_HEIGHT-STATUS_HEIGHT);
+    self.fastTextView.frame = CGRectMake(self.fastTextView.frame.origin.x, origin_y, self.fastTextView.frame.size.width, self.view.bounds.size.height-origin_y);
     
-//    NSLog(@"[[UIScreen mainScreen] bounds].size.height %f NAVBAR_HEIGHT %f TABBAR_HEIGHT %f",[[UIScreen mainScreen] bounds].size.height,NAVBAR_HEIGHT,TABBAR_HEIGHT);
+    [self.topview removeFromSuperview];
+
+}
+
+-(IBAction)dismissKeyBoard:(id)sender {
+    [_fastTextView resignFirstResponder];
+}
+
+-(IBAction)bold:(id)sender {
+    if (_fastTextView.selectedRange.length>0) {
+        CTFontRef font = CTFontCreateWithName((CFStringRef)[UIFont boldSystemFontOfSize:17].fontName, 17, NULL);
+        [_fastTextView.attributedString beginStorageEditing];
+        [_fastTextView.attributedString addAttribute:(id)kCTFontAttributeName value:(__bridge id)font range:_fastTextView.selectedRange];
+        [_fastTextView.attributedString refreshParagraghInRange:_fastTextView.selectedRange];
+        [_fastTextView.attributedString endStorageEditing];
+        [_fastTextView refreshAllView];
+    }
+}
+
+-(IBAction)italic:(id)sender {
+    if (_fastTextView.selectedRange.length>0) {
+        CTFontRef font = CTFontCreateWithName((CFStringRef)[UIFont italicSystemFontOfSize:17].fontName, 17, NULL);
+        
+        [_fastTextView.attributedString beginStorageEditing];
+        [_fastTextView.attributedString addAttribute:(id)kCTFontAttributeName value:(__bridge id)font range:_fastTextView.selectedRange];
+        [_fastTextView.attributedString refreshParagraghInRange:_fastTextView.selectedRange];
+        [_fastTextView.attributedString endStorageEditing];
+        [_fastTextView refreshAllView];
+    }
+}
+
+-(IBAction)underline:(id)sender {
+    if (_fastTextView.selectedRange.length>0) {
+        CTFontRef font = CTFontCreateWithName((CFStringRef)[UIFont systemFontOfSize:17].fontName, 17, NULL);
+        [_fastTextView.attributedString beginStorageEditing];
+        [_fastTextView.attributedString addAttribute:(id)kCTFontAttributeName value:(__bridge id)font range:_fastTextView.selectedRange];
+        
+        //下划线
+        [_fastTextView.attributedString addAttribute:(id)kCTUnderlineStyleAttributeName value:(id)[NSNumber numberWithInt:kCTUnderlineStyleThick] range:_fastTextView.selectedRange];
+        //下划线颜色
+        [_fastTextView.attributedString addAttribute:(id)kCTUnderlineColorAttributeName value:(id)[UIColor redColor].CGColor range:_fastTextView.selectedRange];
+        
+        [_fastTextView.attributedString refreshParagraghInRange:_fastTextView.selectedRange];
+        [_fastTextView.attributedString endStorageEditing];
+        [_fastTextView refreshAllView];
+    }
+}
+
+-(IBAction)showFace:(UIButton*)sender
+{
+	sender.tag=!sender.tag;
+	if (sender.tag) {
+		[_fastTextView resignFirstResponder];
+        UIView *inputView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+        [inputView setBackgroundColor:[UIColor grayColor]];
+        
+		scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 180)];
+        [scrollView setBackgroundColor:[UIColor grayColor]];
+		for (int i=0; i<3; i++) {
+			FacialView *fview=[[FacialView alloc] initWithFrame:CGRectMake(320*i, 0, 320, 180)];
+			[fview loadFacialView:i size:CGSizeMake(45, 45)];
+			fview.delegate=self;
+			[scrollView addSubview:fview];
+			
+		}
+		scrollView.contentSize=CGSizeMake(320*3, 180);
+        scrollView.showsVerticalScrollIndicator  = NO;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.scrollEnabled = YES;
+        scrollView.pagingEnabled=YES;
+        scrollView.delegate = self;
+        
+        //定义PageControll
+        pageControl = [[UIPageControl alloc] init];
+        [pageControl setBackgroundColor:[UIColor grayColor]];
+        pageControl.frame = CGRectMake(130, 180, 60, 20);//指定位置大小
+        pageControl.numberOfPages = 3;//指定页面个数
+        pageControl.currentPage = 0;//指定pagecontroll的值，默认选中的小白点（第一个）
+        [pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
+        //添加委托方法，当点击小白点就执行此方法
+        [inputView addSubview:scrollView];
+        [inputView addSubview:pageControl];
+        
+        _fastTextView.inputView=inputView;
+		[_fastTextView becomeFirstResponder];
+        //		[scrollView release];
+        //        [pageControl release];
+        //[buttonFace setBackgroundImage:[UIImage imageNamed:@"btn_comment_keyboard"] forState:UIControlStateNormal];
+        // NSLog(@"self.frame.size.height %f",self.frame.size.height);
+		
+	}else {
+		_fastTextView.inputView=nil;
+        
+		[_fastTextView reloadInputViews];
+		[_fastTextView becomeFirstResponder];
+        //[buttonFace setBackgroundImage:[UIImage imageNamed:@"btn_comment_face"] forState:UIControlStateNormal];
+	}
+    
+}
+
+//scrollview的委托方法，当滚动时执行
+- (void)scrollViewDidScroll:(UIScrollView *)sender {
+    int page = scrollView.contentOffset.x / 320;//通过滚动的偏移量来判断目前页面所对应的小白点
+    pageControl.currentPage = page;//pagecontroll响应值的变化
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    
+}
+
+//pagecontroll的委托方法
+- (IBAction)changePage:(id)sender {
+    int page = pageControl.currentPage;//获取当前pagecontroll的值
+    [scrollView setContentOffset:CGPointMake(320 * page, 0)];//根据pagecontroll的值来改变scrollview的滚动位置，以此切换到指定的页面
+}
+
+
+
+-(void)selectedFacialView:(NSString*)str
+{
+    
+    [self _addEmotion:str];
+    //NSLog(@"selectedFacialView %@",str);
+    /*
+    NSString *i_transCharacter = [m_pEmojiDic objectForKey:[NSString stringWithFormat:@"%@",str]];
+	//判断输入框是否有内容，追加转义字符
+	if (textView.text == nil) {
+		self.textView.text = i_transCharacter;
+	}
+	else {
+		self.textView.text = [textView.text stringByAppendingString:i_transCharacter];
+	}
+    */
+	
 }
 
 

@@ -7,17 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FacialView.h"
 
 @class FastTextView;
-@interface DemoViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
+@interface DemoViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIScrollViewDelegate,facialViewDelegate> {
     
     FastTextView *_fastTextView;
     UITextView *_textView;
     BOOL isAddSlide;
-    
+    UIPageControl *pageControl;
+    UIScrollView *scrollView;
+    CGFloat origin_y;
 }
 
 @property(nonatomic,strong) FastTextView *fastTextView;
 @property(nonatomic,strong) UITextView *textView;
+@property(retain,nonatomic) IBOutlet UIView *topview;
+
+
 
 @end

@@ -85,8 +85,9 @@
     free(self.origins);   
     _lines=nil;        
     _textAttchmentList=nil;    
-    _linerefs=nil;     
-    _layer=nil;
+    _linerefs=nil;
+    CGLayerRelease(_layer);
+    //_layer=nil;
     NSLog(@"FastTextParagraph dealloc ");
     
 }
@@ -136,14 +137,18 @@
     self.origins=origins;
     self.range=addParaRange;
     self.rect=CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height+self.pragraghSpaceHeight) ;
+   
     
     if (isBuildLayer) {
 #if RENDER_WITH_LINEREF        
         self.linerefs=[NSMutableArray arrayWithArray:lines];    
 #else
+        if (self.layer!=nil) {
+            CGLayerRelease(self.layer);
+        }
         if (context!=NULL) {
-            _layer=CGLayerCreateWithContext (context,rect.size, NULL);
-            [self buildLayer:lines layer:_layer];
+            self.layer=CGLayerCreateWithContext (context,self.rect.size, NULL);
+            [self buildLayer:lines layer: self.layer];
         }       
        
         lines=nil;//clear line
@@ -754,6 +759,17 @@
     NSLog(@"FastTextStorage didReceiveMemoryWarning ");
 }
 
+-(void)clearCacheLinerefs{
+    for (int j=0; j<[self.paragraphs count]; j++) {
+        FastTextParagraph *textParagraph=[self.paragraphs objectAtIndex:j];
+        
+#if RENDER_WITH_LINEREF
+        textParagraph.linerefs=nil;
+#else
+        CGLayerRelease(textParagraph.layer);
+#endif
+    }
 
+}
 
 @end

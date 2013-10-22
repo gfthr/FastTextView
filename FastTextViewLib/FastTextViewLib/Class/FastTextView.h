@@ -32,7 +32,7 @@
 #import "FileWrapperObject.h"
 #import "AttributeConfig.h"
 
-#define TILED_LAYER_MODE 0
+#define TILED_LAYER_MODE 1
 #define RENDER_WITH_LINEREF 1
 
 #define EMPTY_STRING @"　　"
@@ -176,6 +176,7 @@ typedef enum {
 @property(nonatomic,strong) AttributeConfig *attributeConfig;
 
 @property(nonatomic,assign) CGFloat pragraghSpaceHeight;
+@property(nonatomic,assign) BOOL isImageSigleLine;
 
 - (BOOL)hasText;
 - (void)deleteWithRange:(NSRange)range;
@@ -183,6 +184,12 @@ typedef enum {
 - (void)editAttachmentWithCell:(NSObject <FastTextAttachmentCell> *)cell rang:(NSRange)range;
 - (void)setDisplayFlags:(FastDisplayFlags)flags;
 - (void)didReceiveMemoryWarning ;
--(CGFloat)getContentViewHeight;
+- (CGFloat)getContentViewHeight;
+
+-(void)refreshView;
+-(void)refreshAllView;
+
+- (void)selectionChanged;
+
 
 @end

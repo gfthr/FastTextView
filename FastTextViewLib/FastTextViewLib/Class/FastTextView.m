@@ -61,6 +61,7 @@ typedef enum {
 @property(nonatomic,weak) id delegate;
 @property (nonatomic, readonly) ContentViewTiledLayer *tiledLayer;
 -(void) refreshView;
+-(void) refreshAllView;
 
 @end
 
@@ -202,6 +203,8 @@ typedef enum {
 @synthesize placeHolder=_placeHolder;
 @synthesize pragraghSpaceHeight=_pragraghSpaceHeight;
 
+@synthesize isImageSigleLine;
+
 
 -(void)setDisplayFlags:(FastDisplayFlags)flags{
     displayFlags=flags;
@@ -215,13 +218,17 @@ typedef enum {
     isSecondTap=NO;
     isInsertText=NO;
     isFirstResponser=NO;
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     //[UIColor colorWithPatternImage:[UIImage imageNamed:@"paperbg.png"]];
    
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.clipsToBounds = YES;
+  
+   
     
-    FastContentView *contentView = [[FastContentView alloc] initWithFrame:CGRectInset(self.bounds, 8.0f, 8.0f)];
+   //FastContentView *contentView = [[FastContentView alloc] initWithFrame:CGRectInset(self.bounds, 8.0f, 8.0f)];
+    
+    FastContentView *contentView = [[FastContentView alloc] initWithFrame:CGRectMake(10, 8, self.bounds.size.width-16, self.bounds.size.height-16)];
     contentView.autoresizingMask =  self.autoresizingMask;
     contentView.delegate = self;
     contentView.backgroundColor=[UIColor clearColor];
@@ -265,6 +272,23 @@ typedef enum {
     displayFlags=FastDisplayFull;
    
     [self setText:@""];
+    
+#if TILED_LAYER_MODE
+    //    CGSize size0=CGSizeMake(_textContentView.frame.size.width*2, self.frame.size.height*8);
+    //    tiledLayer.tileSize =size0 ;
+    
+    ContentViewTiledLayer *tiledLayer = (ContentViewTiledLayer *)[_textContentView layer];
+    
+    tiledLayer.levelsOfDetail = 1;
+    tiledLayer.levelsOfDetailBias = 0;
+    // get larger dimension and multiply by scale
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    CGFloat largerDimension = MAX(mainScreen.applicationFrame.size.width, mainScreen.applicationFrame.size.height);
+    CGFloat scale = mainScreen.scale;
+    // this way tiles cover entire screen regardless of orientation or scale
+    CGSize tileSize = CGSizeMake(largerDimension * scale, largerDimension * scale);
+    tiledLayer.tileSize = tileSize;
+#endif
     
 }
 
@@ -316,6 +340,16 @@ typedef enum {
     _placeHolder=nil;
 }
 
+-(void)refreshView{
+    [_textContentView refreshView];
+}
+
+-(void)refreshAllView{
+    [_textContentView refreshAllView];
+}
+
+
+
 -(void)setPlaceHolder:(NSString *)mplaceHolder{
     _placeHolder=mplaceHolder;
     [self showPlaceHolderView];
@@ -328,11 +362,13 @@ typedef enum {
     _placeHolderView =[[UILabel alloc]initWithFrame:CGRectMake(8, 8, 100, 20)];
     [_placeHolderView setText:_placeHolder];
     [_placeHolderView setFont:[UIFont systemFontOfSize:16]];
-    [_placeHolderView setTextColor:[UIColor lightGrayColor]];  
+    [_placeHolderView setTextColor:[UIColor lightGrayColor]];
+    _placeHolderView.backgroundColor=[UIColor clearColor];
     [self addSubview:_placeHolderView];
 }
 
 -(void)recaculate{
+
     CGRect rect = _textContentView.frame;
     CGFloat height = 0;
     if (_attributedString!=nil) {
@@ -342,7 +378,11 @@ typedef enum {
     
     _textContentView.frame =CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, MAX(rect.size.height, 0));
     
+    
+    
     //NSLog(@" _textContentView.frame %@",NSStringFromCGRect(_textContentView.frame));
+    
+//    NSLog(@"NSStringFromCGRect(self.frame) %@  NSStringFromCGRect(self.bounds) %@  _textContentView.frame %@ _textContentView.bounds %@ ",NSStringFromCGRect(self.frame), NSStringFromCGRect(self.bounds),NSStringFromCGRect(_textContentView.frame),NSStringFromCGRect(_textContentView.bounds));
     
     self.contentSize = CGSizeMake(self.frame.size.width, rect.size.height+(self.font.lineHeight*2));
     
@@ -351,13 +391,25 @@ typedef enum {
 //        [self performSelector:@selector(showMenu) withObject:nil afterDelay:0.35f];
 //    }
 
-    #if TILED_LAYER_MODE
-    CGSize size0=CGSizeMake(_textContentView.frame.size.width*2, self.frame.size.height*8);
+    //self.bounds=CGRectMake(self.bounds.origin.x,0,self.bounds.size.width,self.bounds.size.height);
+    
+/*    #if TILED_LAYER_MODE
+//    CGSize size0=CGSizeMake(_textContentView.frame.size.width*2, self.frame.size.height*8);
+    //    tiledLayer.tileSize =size0 ;
+    
     ContentViewTiledLayer *tiledLayer = (ContentViewTiledLayer *)[_textContentView layer];
-    tiledLayer.tileSize =size0 ;
+
     tiledLayer.levelsOfDetail = 1;
-    tiledLayer.levelsOfDetailBias = 0;
+    tiledLayer.levelsOfDetailBias = 0;    
+    // get larger dimension and multiply by scale
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    CGFloat largerDimension = MAX(mainScreen.applicationFrame.size.width, mainScreen.applicationFrame.size.height);
+    CGFloat scale = mainScreen.scale;
+    // this way tiles cover entire screen regardless of orientation or scale
+    CGSize tileSize = CGSizeMake(largerDimension * scale, largerDimension * scale);
+    tiledLayer.tileSize = tileSize;
     #endif
+ */
 }
 
 - (void)layoutSubviews {
@@ -398,11 +450,14 @@ typedef enum {
 //#pragma mark
 
 -(void)textStorageWillProcessEditing:(FastTextStorage *)storage{
-
+    if(_delegateRespondsToDidBeginEditing)
+        [self.delegate fastTextViewDidBeginEditing:self];
 }
 
 -(void)textStorageDidProcessEditing:(FastTextStorage *)storage{
     [self layoutChange];
+    if(_delegateRespondsToDidEndEditing)
+        [self.delegate fastTextViewDidEndEditing:self];
 }
 
 - (NSString *)text {
@@ -617,8 +672,8 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     
     return result;    
 }
-
-- (void)drawPathFromRects:(NSArray*)array cornerRadius:(CGFloat)cornerRadius {
+//wq ADD for 坐标变换 增加 ctx:(CGContextRef)ctx 参数
+- (void)drawPathFromRects:(NSArray*)array cornerRadius:(CGFloat)cornerRadius ctx:(CGContextRef)ctx{
     
     if (array==nil || [array count] == 0) return;
     
@@ -657,14 +712,14 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
     }
     
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    //CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextAddPath(ctx, _path);
     CGContextFillPath(ctx);
     CGPathRelease(_path);
 
 }
-
-- (void)drawBoundingRangeAsSelection:(NSRange)selectionRange cornerRadius:(CGFloat)cornerRadius {
+//wq ADD for 坐标变换 增加 ctx:(CGContextRef)ctx 参数
+- (void)drawBoundingRangeAsSelection:(NSRange)selectionRange cornerRadius:(CGFloat)cornerRadius  ctx:(CGContextRef)ctx {
 	
     if (selectionRange.length == 0 || selectionRange.location == NSNotFound) {
         return;
@@ -702,38 +757,36 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                 if (range.length==1) {
                     selectionRect.size.width = _textContentView.bounds.size.width;
                 }
-              
+                
                 [pathRects addObject:NSStringFromCGRect(selectionRect)];
                 CFRelease(line);
                 
             }
         }
-    }    
-    [self drawPathFromRects:pathRects cornerRadius:cornerRadius];
+    }
+    //wq ADD for 坐标变换
+    [self drawPathFromRects:pathRects cornerRadius:cornerRadius ctx:ctx];
 }
 
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+#if !TILED_LAYER_MODE
     if([keyPath isEqualToString:@"contentOffset"]){
-        
         if (self.contentOffset.y!=oldOffset && !isInsertText) {
-            
             [_textContentView refreshView];
-            
             oldOffset=self.contentOffset.y;
-            
         }
-        
-        
-        
     }
-        
+#endif
+
 }
 
 -(CGRect)getVisibleRect{  
     
-    return CGRectMake(0,_textContentView.frame.size.height-self.contentOffset.y-self.frame.size.height, _textContentView.frame.size.width, self.frame.size.height+18);
+    return CGRectMake(0,self.contentOffset.y, _textContentView.frame.size.width, self.frame.size.height+18);
+    //  return CGRectMake(0,_textContentView.frame.size.height-self.contentOffset.y-self.frame.size.height, _textContentView.frame.size.width, self.frame.size.height+18);
     
 }
 
@@ -741,8 +794,9 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
 
 #if RENDER_WITH_LINEREF
+//wq ADD for 坐标变换 增加 ctx:(CGContextRef)ctx 参数
+- (void)drawContentInRect:(CGRect)rect ctx:(CGContextRef)ctx {
 
-- (void)drawContentInRect:(CGRect)rect {
     double starttime=[[NSDate date]timeIntervalSince1970];
     
     [self.attributedString clearDeleteParagraphs]; //clear attributedString deleted paragraphs // 清理已删除的章节
@@ -755,15 +809,18 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
         //    double starttime=[[NSDate date]timeIntervalSince1970];
         
-        [[FastTextView selectionColor] setFill];
-        [self drawBoundingRangeAsSelection:self.selectedRange cornerRadius:0.0f];
-        [self drawBoundingRangeAsSelection:self.markedRange cornerRadius:0.0f];//gfthr add for markedRange IME（输入法）
+       //[[FastTextView selectionColor] setFill];
+        CGContextSetFillColorWithColor(ctx, [FastTextView selectionColor].CGColor);
+
+        [self drawBoundingRangeAsSelection:self.selectedRange cornerRadius:0.0f ctx:ctx];
+        [self drawBoundingRangeAsSelection:self.markedRange cornerRadius:0.0f ctx:ctx];//gfthr add for markedRange IME（输入法）
         
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
+        //CGContextRef ctx = UIGraphicsGetCurrentContext();
         
 #if TILED_LAYER_MODE
         CGFloat ystart=rect.origin.y;
         CGFloat yend=rect.origin.y+rect.size.height;
+        CGContextClipToRect(ctx, rect);
 #else
         CGRect dirtyRect = [self getVisibleRect];
         CGContextClipToRect(ctx, dirtyRect);//CGContextGetClipBoundingBox(ctx);
@@ -833,8 +890,13 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                             
                             CGSize size = [attachmentCell attachmentSize];
                             CGPoint baselineOffset = [attachmentCell cellBaselineOffset];
+                            
+                            if (!self.isImageSigleLine) {
+                                baselineOffset=CGPointMake(0, baselineOffset.y);
+                            }
+                            
                             CGRect cellrect = { { textParagraph.rect.origin.x+origins[i].x + position.x+baselineOffset.x, textParagraph.rect.origin.y+origins[i].y + position.y+baselineOffset.y }, size };
-                            UIGraphicsPushContext(UIGraphicsGetCurrentContext());
+                            UIGraphicsPushContext(ctx);//UIGraphicsGetCurrentContext() //WQ ADD for 坐标变换
                             [attachmentCell attachmentDrawInRect: cellrect];
                             UIGraphicsPopContext();
                             
@@ -891,7 +953,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     CGFloat ystart=dirtyRect.origin.y;
     CGFloat yend=dirtyRect.origin.y+dirtyRect.size.height;
     
-    _textAttchmentList=[[NSMutableArray alloc]init];
+    _visibleTextAttchList=[[NSMutableArray alloc]init];
 	
 	for (int j=0; j<[_attributedString.paragraphs count]; j++) {
         
@@ -908,7 +970,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         }        
         
         CGContextDrawLayerInRect(ctx, textParagraph.rect, textParagraph.layer);       
-        [_textAttchmentList addObjectsFromArray:textParagraph.textAttchmentList];
+        [_visibleTextAttchList addObjectsFromArray:textParagraph.textAttchmentList];
         
     }
     
@@ -934,7 +996,14 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
 
 #endif
+//wq ADD for 坐标变换
 
+- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view{
+    point = [super convertPoint:point toView:_textContentView];
+    point=CGPointMake(point.x, _textContentView.frame.size.height-point.y);
+    return point;
+}
+//wq ADD for 坐标变换 -END
 
  //fix bug :gfthr when tap on the editor, the caret not on the image line // tap时光标不要在 图片行
 - (NSInteger)closestWhiteSpaceIndexToPoint:(CGPoint)point {
@@ -969,6 +1038,8 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                 CGPoint convertedPoint = CGPointMake(point.x - origins[i].x, point.y - originsy);
                 CFIndex cfIndex = [textParagraph lineGetStringIndexForPosition:line fastTextLine:fastline piont:convertedPoint];
                 NSInteger index = cfIndex == kCFNotFound ? NSNotFound : cfIndex;
+                
+                returnRange =NSMakeRange(index,0);
                 
                 if(range.location==NSNotFound){
                     isfound=TRUE;
@@ -1024,7 +1095,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                     }
                     
                 }
-                
+                /*
                 [_attributedString.string enumerateSubstringsInRange:range options:NSStringEnumerationByWords usingBlock:^(NSString *subString, NSRange subStringRange, NSRange enclosingRange, BOOL *stop){
 
                     if (NSLocationInRange(index, enclosingRange)) {
@@ -1042,7 +1113,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                         *stop = YES;
                     }
                     
-                }];
+                }];*/
                 if (lineHasImage) {
                     returnRange=[self changRangeImageLine:lines curParagraph:textParagraph curParagraphIndex:j curline:i];
                 }
@@ -1090,6 +1161,9 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
  //fix bug :gfthr ADD:to check line has image // 检查某一行是否有图片
 -(BOOL)checkLineHasImage:(CTLineRef )line lineRange:(CFRange)lineRange{
     BOOL lineHasImage=FALSE;
+    if (!self.isImageSigleLine) {
+        return lineHasImage;
+    }
     
     CFRange cfRange = lineRange; 
     if (cfRange.location == kCFNotFound ) {
@@ -1175,7 +1249,8 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         
         for (int i = 0; i < lines.count; i++) {
             CGFloat origin_y=[textParagraph lineGetOriginY:origins[i].y];
-            if (point.y > origin_y) {
+            if (point.y > origin_y) { //wq ADD for 坐标变换
+            //if (point.y > origin_y) {//
                 
                 FastTextLine *fastline=[lines objectAtIndex:i];                
                 CTLineRef line =[self.attributedString buildCTLineRef:fastline withParagraph:textParagraph] ;
@@ -1186,6 +1261,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                 CFRange cfRange = [textParagraph lineGetStringRange:fastline];
                 NSRange range = NSMakeRange(cfRange.location == kCFNotFound ? NSNotFound : cfRange.location, cfRange.length);
                 returnRange = range;
+               
                 [_attributedString.string enumerateSubstringsInRange:range options:NSStringEnumerationByWords usingBlock:^(NSString *subString, NSRange subStringRange, NSRange enclosingRange, BOOL *stop){
                     
                     if (index - subStringRange.location <= subStringRange.length) {
@@ -1194,6 +1270,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                     }
                     
                 }];
+                
                 CFRelease(line);
                 isfound=TRUE;
                 break;
@@ -1223,7 +1300,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
             if (index >= range.location && index < range.location+range.length) {
                 
                 if (range.length > 1 ) {
-                    
+                   
                     [_attributedString.string enumerateSubstringsInRange:range options:NSStringEnumerationByWords usingBlock:^(NSString *subString, NSRange subStringRange, NSRange enclosingRange, BOOL *stop){
                         
                         if (index - subStringRange.location <= subStringRange.length) {
@@ -1249,7 +1326,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     return [self applyCaretChangeForIndex:index point:CGPointMake(-1.0f, -1.0f)];
 
 }
-
+/*
 -(void)applyCaretChangeForIndex:(NSInteger)index point:(CGPoint)point{
     if (!_editing) {
         [_caretView removeFromSuperview];
@@ -1263,17 +1340,12 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     [_caretView delayBlink];
     
     CGRect frame = _caretView.frame;
-/*if (self.font.lineHeight==0) {
-        frame.origin.y += 18; //gfthr let the caret can visible // 让光标能看见,经过几次微调，调整为现在的状态
-    }else{
-        frame.origin.y +=  (self.font.lineHeight); //gfthr  let the caret can visible //让光标能看见,经过几次微调，调整为现在的状态
-    }*/
+
     
     frame.size.height= frame.size.height;
     
     CGRect careRect=CGRectApplyAffineTransform (frame,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,self.contentSize.height));
-    
-   /* NSLog(@"careRect %@ self.contentOffset.y %f self.contentSize.height %f self.contentSize.height-self.contentOffset.y %f",NSStringFromCGRect(careRect),self.contentOffset.y,self.contentSize.height,self.contentSize.height-self.contentOffset.y);*/
+
     if ((careRect.origin.y- careRect.size.height)< self.contentOffset.y) {
         careRect.origin.y=careRect.origin.y-2*frame.size.height;
     }
@@ -1281,6 +1353,44 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     [self scrollRectToVisible:careRect animated:YES];
     
 }
+ */
+
+//wq ADD for 坐标变换
+-(void)applyCaretChangeForIndex:(NSInteger)index point:(CGPoint)point{
+    if (!_editing) {
+        [_caretView removeFromSuperview];
+    }
+    
+    if (!_caretView.superview) {
+        [_textContentView addSubview:_caretView];
+    }
+    
+    CGRect careRect = [self caretRectForIndex:index point:point];
+    
+    _caretView.frame = careRect;
+    //NSLog(@"_caretView.frame %@",NSStringFromCGRect(_caretView.frame));
+    [_caretView delayBlink];
+    
+    //CGRect frame = _caretView.frame;
+    /*if (self.font.lineHeight==0) {
+     frame.origin.y += 18; //gfthr let the caret can visible // 让光标能看见,经过几次微调，调整为现在的状态
+     }else{
+     frame.origin.y +=  (self.font.lineHeight); //gfthr  let the caret can visible //让光标能看见,经过几次微调，调整为现在的状态
+     }*/
+    
+    careRect.size.height= 3*MIN(30, MAX(careRect.size.height,25)) ;
+    
+    //    CGRect careRect=CGRectApplyAffineTransform (frame,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,self.contentSize.height));
+    
+    /* NSLog(@"careRect %@ self.contentOffset.y %f self.contentSize.height %f self.contentSize.height-self.contentOffset.y %f",NSStringFromCGRect(careRect),self.contentOffset.y,self.contentSize.height,self.contentSize.height-self.contentOffset.y);*/
+    //    if ((careRect.origin.y- careRect.size.height)< self.contentOffset.y) {
+    //        careRect.origin.y=careRect.origin.y-2*frame.size.height;
+    //    }
+    
+    [self scrollRectToVisible:careRect animated:YES];
+    
+}
+//wq ADD for 坐标变换 -END
 
 //获得光标的RECT
 - (CGRect)caretRectForIndex:(NSInteger)index {
@@ -1307,12 +1417,21 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         
         CGPoint origin = CGPointMake(CGRectGetMinX(_textContentView.bounds), CGRectGetMaxY(_textContentView.bounds) - self.font.leading);//gfthr add for caret not in first line
         
-        return CGRectMake(origin.x, origin.y, 3, self.font.ascender + fabs(self.font.descender*2));
+        
+        CGRect careRect=CGRectMake(origin.x, origin.y, 3, self.font.ascender + fabs(self.font.descender*2));
+        
+        careRect=CGRectApplyAffineTransform (careRect,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,_textContentView.frame.size.height));
+        
+        return careRect;
         
     } else if (_attributedString.length == 0 || index == 0) {        
         CGPoint origin = CGPointMake(CGRectGetMinX(_textContentView.bounds), CGRectGetMaxY(_textContentView.bounds) - self.font.leading);//gfthr add for caret not in first line
         
-        return CGRectMake(origin.x, origin.y, 3, self.font.ascender + fabs(self.font.descender*2));
+        
+        CGRect careRect=CGRectMake(origin.x, origin.y, 3, self.font.ascender + fabs(self.font.descender*2));
+        
+        careRect=CGRectApplyAffineTransform (careRect,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,_textContentView.frame.size.height));
+        return careRect;
     }
     
     // last index is newline
@@ -1414,13 +1533,20 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
                 
                 if (index == _attributedString.length && (([_attributedString.string characterAtIndex:(index - 1)] == '\n')||([_attributedString.string characterAtIndex:(index - 1)] == '\r')) ) {
 //                    if (lineHasImage) {
-                        return CGRectMake(origin.x, floorf(origin_y - descent*2 - self.font.ascender) , 3, self.font.ascender + fabs(self.font.descender*2));
+                    
+                        //wq ADD for 坐标变换
+                        CGRect careRect=CGRectMake(origin.x, floorf(origin_y - descent*2 - self.font.ascender) , 3, self.font.ascender + fabs(self.font.descender*2));
+                    
+                        careRect=CGRectApplyAffineTransform (careRect,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,_textContentView.frame.size.height));
+                        //wq ADD for 坐标变换 -END
+                        return careRect;
 //                    }
                 }
             }       
         }        
     }   
     
+    returnRect=CGRectApplyAffineTransform (returnRect,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,_textContentView.frame.size.height));
     return returnRect;
 }
 
@@ -1468,22 +1594,26 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     return returnRect;
 }
 
-
+//wq ADD for 坐标变换
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     
-    _caretView.frame = [self caretRectForIndex:self.selectedRange.location];
-    CGRect caretViewframe = _caretView.frame;
-    
-    
-    CGRect careRect=CGRectApplyAffineTransform (caretViewframe,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,self.contentSize.height));
-    
     [self recaculate];//gfthr add for recaculate the size // 重算高度
     
-    [self scrollRectToVisible:careRect animated:YES];
+    CGRect returnRect = [self caretRectForIndex:self.selectedRange.location];
+    
+    _caretView.frame =returnRect;
+    
+    NSLog(@"_caretView.frame %@ ",NSStringFromCGRect(_caretView.frame));
+    CGRect caretViewframe = _caretView.frame;
+    
+    caretViewframe.size.height= 3*MIN(30, MAX(caretViewframe.size.height,26)) ;
+    
+    [self scrollRectToVisible:caretViewframe animated:YES];
+    
     [_textContentView refreshView];
 }
-
+//wq ADD for 坐标变换 -END
 
 
 
@@ -1643,7 +1773,13 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
 - (NSString *)textInRange:(UITextRange *)range {
     FastIndexedRange *r = (FastIndexedRange *)range;
-    return ([_attributedString.string substringWithRange:r.range]);
+    //IOS7 BUG FIX
+    if ((r.range.location+r.range.length)<=[_attributedString.string length]) {
+        return ([_attributedString.string substringWithRange:r.range]);
+    }else{
+        return @"";
+    }
+    
 }
 
 - (void)replaceRange:(UITextRange *)range withText:(NSString *)text {
@@ -2159,6 +2295,22 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         
     } else if (selectedNSRange.length > 0) {
         
+         if ([_attributedString.string characterAtIndex:selectedNSRange.location] == '\n' && selectedNSRange.length==1) {
+             //NSLog(@"selectedNSRange.length > 0");
+             
+             //fix bug: IOS7 new bug >>> gfthr ADD delete the image bug
+             //删除时，删除整张图片
+             NSRange checkImageRang=NSMakeRange(MAX(0, selectedNSRange.location-1), 2) ;
+             unichar attachmentCharacter = FastTextAttachmentCharacter;
+             
+             if ([[_attributedString.string substringWithRange:checkImageRang] isEqualToString:[NSString stringWithFormat:@"%@\n",[NSString stringWithCharacters:&attachmentCharacter length:1]]]) {
+                 selectedNSRange=checkImageRang;
+             }
+             //fix bug end
+             
+         }
+        
+        
         [self.attributedString deleteCharactersInRange:selectedNSRange];
         
         selectedNSRange.length = 0;
@@ -2170,19 +2322,23 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         if ([_attributedString.string characterAtIndex:index] == ' ') {
             [self performSelector:@selector(showCorrectionMenuWithoutSelection) withObject:nil afterDelay:0.2f];
         }
-              
-    
-        selectedNSRange = [[_attributedString string] rangeOfComposedCharacterSequenceAtIndex:selectedNSRange.location - 1];
-        //fix bug: gfthr ADD delete the image bug        
-        //删除时，删除整张图片
-        NSRange checkImageRang=NSMakeRange(MAX(0, selectedNSRange.location-1), 2) ;
-        unichar attachmentCharacter = FastTextAttachmentCharacter;
-       
-        if ([[_attributedString.string substringWithRange:checkImageRang] isEqualToString:[NSString stringWithFormat:@"%@\n",[NSString stringWithCharacters:&attachmentCharacter length:1]]]) {
-            selectedNSRange=checkImageRang;
+        
+        NSInteger itmp=selectedNSRange.location - 1;
+        if (itmp>=0 && itmp<[[_attributedString string] length]) { //fix ios7 删除字符时的bug
+            
+            selectedNSRange = [[_attributedString string] rangeOfComposedCharacterSequenceAtIndex:selectedNSRange.location - 1];
+            //fix bug: gfthr ADD delete the image bug
+            //删除时，删除整张图片
+            NSRange checkImageRang=NSMakeRange(MAX(0, selectedNSRange.location-1), 2) ;
+            unichar attachmentCharacter = FastTextAttachmentCharacter;
+            
+            if ([[_attributedString.string substringWithRange:checkImageRang] isEqualToString:[NSString stringWithFormat:@"%@\n",[NSString stringWithCharacters:&attachmentCharacter length:1]]]) {
+                selectedNSRange=checkImageRang;
+            }
+            //fix bug end
+            [self.attributedString deleteCharactersInRange:selectedNSRange];
         }
-        //fix bug end
-        [self.attributedString deleteCharactersInRange:selectedNSRange];
+        
         
         selectedNSRange.length = 0;
     }
@@ -2306,6 +2462,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     if (self.selectedRange.length == 0) {
         [self applyCaretChangeForIndex:self.selectedRange.location];
     }
+    [_textContentView refreshView];
     
     _dirty=YES;
     
@@ -2582,8 +2739,13 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
        
         //check the attachment type,fire the event
         //确定是否是slide或者图片等附件类型，如果是则触发事件
+        
+        //wq ADD for 坐标变换
+        CGPoint newpoint=CGPointApplyAffineTransform (point,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,_textContentView.frame.size.height));
+        //wq ADD for 坐标变换 -END
+        
         for (TextAttchment *attch in _visibleTextAttchList) {
-            if ( CGRectContainsPoint(CGRectInset([_textContentView convertRect:attch.cellRect toView:self], 5.0f, 5.0f) , point)) {
+            if ( CGRectContainsPoint(CGRectInset([_textContentView convertRect:attch.cellRect toView:self], 5.0f, 5.0f) , newpoint)) {
                 if ([self.delegate respondsToSelector:@selector(fastTextView:txtAttachmentLongPress:)]) {
                     [self.delegate fastTextView:self txtAttachmentLongPress:attch];
                 }
@@ -2893,6 +3055,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
 - (CGRect)menuPresentationRect {
     
+
     CGRect rect = [_textContentView convertRect:_caretView.frame toView:self];
     
     if (_selectedRange.location != NSNotFound && _selectedRange.length > 0) {
@@ -2923,7 +3086,13 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [menuController setMenuItems:nil];
-        [menuController setTargetRect:[self menuPresentationRect] inView:self];
+        CGRect rect=[self menuPresentationRect];
+        
+        //wq 去掉坐标变换
+        [menuController setTargetRect:rect inView:_textContentView];
+        //[menuController setTargetRect:rect inView:self];
+        //wq ADD for 坐标变换 -END
+        
         [menuController update];
         [menuController setMenuVisible:YES animated:YES]; 
     });
@@ -3146,8 +3315,15 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 }
 
 - (void)select:(id)sender {
-        
-    NSRange range = [self characterRangeAtPoint_:_caretView.center];
+    
+    //wq ADD for 坐标变换
+    CGPoint point=CGPointApplyAffineTransform (_caretView.center,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,_textContentView.frame.size.height));
+    //wq ADD for 坐标变换 -END
+
+    NSRange range = [self characterRangeAtPoint_:point];
+    //NSRange range = [self characterRangeAtPoint_:_caretView.center];
+    
+    
     self.selectedRange = range;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuDidHide:) name:UIMenuControllerDidHideMenuNotification object:nil];
@@ -3322,9 +3498,11 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     if ((self = [super initWithFrame:frame])) {
         
         self.userInteractionEnabled = NO;
-        self.layer.geometryFlipped = YES;
+        //wq ADD for 坐标变换
+        //self.layer.geometryFlipped = YES; //造成CaTiledLayer抖动的元凶？？
+        //wq ADD for 坐标变换 -END
         self.backgroundColor = [UIColor whiteColor];
-        self.layer.needsDisplayOnBoundsChange=NO;                
+        //self.layer.needsDisplayOnBoundsChange=NO;
     }
     return self;
 }
@@ -3348,17 +3526,53 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 -(void)refreshView{
    
     [_delegate setDisplayFlags:FastDisplayRect];
+     //wq ADD for 坐标变换
     [self setNeedsDisplayInRect:[_delegate getVisibleRect]];
+    
+    //[self setNeedsDisplayInRect:self.bounds];
+     //wq ADD for 坐标变换 -END
+    [self setNeedsLayout];
+    
+}
+
+-(void)refreshAllView{
+    
+    [_delegate setDisplayFlags:FastDisplayRect];
+    //wq ADD for 坐标变换
+    //[self setNeedsDisplayInRect:[_delegate getVisibleRect]];
+    
+    [self setNeedsDisplayInRect:self.bounds];
+    //wq ADD for 坐标变换 -END
+    [self setNeedsLayout];
     
 }
 
 
-- (void)drawRect:(CGRect)rect {
 
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
+{
+    // Flip the coordinate system
+    //wq ADD for 坐标变换
+
+    CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
+    CGContextTranslateCTM(ctx, 0, self.bounds.size.height);
+    CGContextScaleCTM(ctx, 1.0, -1.0);
+    //wq ADD for 坐标变换 -END
+
+    CGRect rect = CGContextGetClipBoundingBox(ctx);
     if (_delegate!=nil ) {
-        [_delegate drawContentInRect:rect];
-    }   
+        [_delegate drawContentInRect:rect ctx:ctx];
+    }
+    
 }
+
+
+//- (void)drawRect:(CGRect)rect {
+//
+//    if (_delegate!=nil ) {
+//        [_delegate drawContentInRect:rect];
+//    }   
+//}
 
 -(void)dealloc{
     //NSLog(@"FastContentView dealloc");
@@ -3442,7 +3656,15 @@ static const NSTimeInterval kBlinkRate = 1.0;
     
     if ((_contentImage!=nil)) {
         CGContextSaveGState(ctx);
+        
         CGContextClipToMask(ctx, rect, [UIImage imageNamed:@"loupe-mask.png"].CGImage);
+        //wq ADD for 坐标变换
+        CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
+        CGContextTranslateCTM(ctx, 0, self.bounds.size.height);
+        CGContextScaleCTM(ctx, 1.0, -1.0);
+        //wq ADD for 坐标变换 -END
+
+        
         [_contentImage drawInRect:rect];        
         CGContextRestoreGState(ctx);
         
@@ -3581,9 +3803,19 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.15f;
 
 - (UIImage*)screenshotFromCaretFrame:(CGRect)rect inView:(UIView*)view scale:(BOOL)scale {
     
+    //wq ADD for 坐标变换
     CGRect offsetRect = [self convertRect:rect toView:view];
+   
+    offsetRect=CGRectApplyAffineTransform (offsetRect,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,view.frame.size.height));
+    
     offsetRect.origin.y += ((UIScrollView*)view.superview).contentOffset.y;
-    offsetRect.origin.y -= _view.bounds.size.height+20.0f;
+    if ([_view isKindOfClass:[FastLoupeView class]]) {
+        offsetRect.origin.y -= _view.bounds.size.height -12.0f; //此处参数不好调整????
+    }else{
+        offsetRect.origin.y -= _view.bounds.size.height + 38.0f; //此处参数不好调整????
+    }
+     //wq ADD for 坐标变换 -END
+    
     offsetRect.origin.x -= (_view.bounds.size.width/2);
     
     //CGFloat magnifyScale = 1.0f;     
@@ -3602,12 +3834,16 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.15f;
     CGContextSetFillColorWithColor(ctx, [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f].CGColor);
     UIRectFill(CGContextGetClipBoundingBox(ctx));
     CGContextSaveGState(ctx);
+
     CGContextTranslateCTM(ctx, 0, view.bounds.size.height);
     CGContextScaleCTM(ctx, 1.0, -1.0);
+
     
-//    CGContextConcatCTM(ctx, CGAffineTransformMakeScale(magnifyScale, magnifyScale));
-    CGContextConcatCTM(ctx, CGAffineTransformMakeTranslation(-(offsetRect.origin.x), offsetRect.origin.y));
+    //CGContextConcatCTM(ctx, CGAffineTransformMakeScale(magnifyScale, magnifyScale));
     
+    CGContextConcatCTM(ctx, CGAffineTransformMakeTranslation(-(offsetRect.origin.x),offsetRect.origin.y));
+    
+   
     UIView *selectionView = nil;
     CGRect selectionFrame = CGRectZero;
     
@@ -3656,6 +3892,8 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.15f;
             frame.origin.y = MAX(frame.origin.y-10.0f, -40.0f);
             rect = [self convertRect:rect toView:view];
         }
+      
+      
         _view.frame = frame;
 
         UIImage *image = [self screenshotFromCaretFrame:rect inView:view scale:(_type==FastWindowMagnify)];
@@ -3722,6 +3960,13 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.15f;
     if ((_contentImage!=nil)) {
         CGContextSaveGState(ctx);
         CGContextClipToMask(ctx, rect, [UIImage imageNamed:@"magnifier-ranged-mask.png"].CGImage);
+        
+        //wq ADD for 坐标变换
+        CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
+        CGContextTranslateCTM(ctx, 0, self.bounds.size.height);
+        CGContextScaleCTM(ctx, 1.0, -1.0);
+        //wq ADD for 坐标变换 -END
+        
         [_contentImage drawInRect:rect];        
         CGContextRestoreGState(ctx);
         
@@ -3758,7 +4003,9 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.15f;
        
         self.backgroundColor = [UIColor clearColor]; 
         self.userInteractionEnabled = NO;
-        self.layer.geometryFlipped = YES;
+        //wq ADD for 坐标变换
+        //self.layer.geometryFlipped = YES; //坐标转换
+        //wq ADD for 坐标变换 -END
         
     }
     return self;
