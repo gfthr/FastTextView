@@ -18,6 +18,10 @@ some feature list blow:
 
 4)eliminate duplicate setNeedDisplay request 
 
+5)surpport IOS7 
+
+6)demo app surpport emotion 
+
 
 Thank you the ChinesAll.com , the china best digital content puslisher !
 
