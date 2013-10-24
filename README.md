@@ -24,6 +24,14 @@ Thank you the ChinesAll.com , the china best digital content puslisher !
 This editor is used on the ChinesAll's writing and reading mobile app tangyuan (see www.itangyuan.com) 
 
 
+demo 
+============
+![demo1](https://github.com/gfthr/FastTextView/blob/master/screenshot/demo1.png "demo1")
+
+![demo2](https://github.com/gfthr/FastTextView/blob/master/screenshot/demo2.png "demo2")
+
+
+
 Install
 ============
 1.put FastTextViewLib to the parrael directory, add  FastTextViewLib.xcodeproj to your main project
