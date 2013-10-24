@@ -26,9 +26,9 @@ This editor is used on the ChinesAll's writing and reading mobile app tangyuan (
 
 demo 
 ============
-![demo1](https://github.com/gfthr/FastTextView/blob/master/screenshot/demo1.png "demo1")
+![demo1](https://raw.github.com/gfthr/FastTextView/master/screenshot/demo1.png "demo1")
 
-![demo2](https://github.com/gfthr/FastTextView/blob/master/screenshot/demo2.png "demo2")
+![demo2](https://raw.github.com/gfthr/FastTextView/master/screenshot/demo2.png "demo2")
 
 
 
