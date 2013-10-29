@@ -24,6 +24,8 @@
 //  THE SOFTWARE.
 //
 
+#define IOSVERSION_7 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
+
 #import "FastTextView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TextAttchment.h"
@@ -1378,7 +1380,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
      frame.origin.y +=  (self.font.lineHeight); //gfthr  let the caret can visible //让光标能看见,经过几次微调，调整为现在的状态
      }*/
     
-    careRect.size.height= 3*MIN(30, MAX(careRect.size.height,25)) ;
+    careRect.size.height= 3*MIN(30,MAX(careRect.size.height,25));
     
     //    CGRect careRect=CGRectApplyAffineTransform (frame,CGAffineTransformMake(1.0, 0.0, 0.0, -1.0,0.0,self.contentSize.height));
     
@@ -1596,27 +1598,33 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
 //wq ADD for 坐标变换
 - (void)setFrame:(CGRect)frame {
+    
+    _frameChanging=TRUE;
     [super setFrame:frame];
     
     [self recaculate];//gfthr add for recaculate the size // 重算高度
     
+    /*
     CGRect returnRect = [self caretRectForIndex:self.selectedRange.location];
-    
     _caretView.frame =returnRect;
-    
     NSLog(@"_caretView.frame %@ ",NSStringFromCGRect(_caretView.frame));
     CGRect caretViewframe = _caretView.frame;
     
-    caretViewframe.size.height= 3*MIN(30, MAX(caretViewframe.size.height,26)) ;
+    caretViewframe.size.height= 3*MIN(30,MAX(caretViewframe.size.height,26));
     
     [self scrollRectToVisible:caretViewframe animated:YES];
+     */
     
     [_textContentView refreshView];
+    
+     _frameChanging=FALSE;
 }
 //wq ADD for 坐标变换 -END
 
 
-
+-(BOOL)frameChanging{
+    return _frameChanging;
+}
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -2289,7 +2297,11 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         [self.attributedString deleteCharactersInRange:selectedNSRange];
         //[self.attributedString endStorageEditing];
         
-        selectedNSRange.location = markedTextRange.location;
+        if (IOSVERSION_7) {
+            selectedNSRange.location = selectedNSRange.location;
+        }else{
+            selectedNSRange.location = markedTextRange.location;
+        }
         selectedNSRange.length = 0;
         markedTextRange = NSMakeRange(NSNotFound, 0);
         
@@ -2324,6 +2336,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         }
         
         NSInteger itmp=selectedNSRange.location - 1;
+        NSLog(@"[[_attributedString string] length] %d",[[_attributedString string] length]);
         if (itmp>=0 && itmp<[[_attributedString string] length]) { //fix ios7 删除字符时的bug
             
             selectedNSRange = [[_attributedString string] rangeOfComposedCharacterSequenceAtIndex:selectedNSRange.location - 1];
@@ -2841,7 +2854,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 
     self.selectedRange = NSMakeRange(index, 0);
   
-    [self applyCaretChangeForIndex:index point:[gesture locationInView:self]];
+    //[self applyCaretChangeForIndex:index point:[gesture locationInView:self]];
     
     if ((oldSelectedRange.location==self.selectedRange.location)
         &&(oldSelectedRange.length==self.selectedRange.length) ) {
@@ -2864,6 +2877,9 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         [self becomeFirstResponder];
         isShowMenu=FALSE;
     }
+    
+    [self applyCaretChangeForIndex:index point:[gesture locationInView:self]];
+    
     
     if (isShowMenu) {
         UIMenuController *menuController = [UIMenuController sharedMenuController];
@@ -2888,7 +2904,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     displayFlags=FastDisplayRect;
     [_textContentView refreshView];
 }
-
+/*
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if ( (oldOffset>self.contentOffset.y)&& (self.contentOffset.y<=0 )&& _delegateRespondsToSwipUp) { //down
         [self.delegate fastTextViewSwipeDown:self];
@@ -2897,6 +2913,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     }
 
 }
+ */
 
 -(void)swipeUp:(UISwipeGestureRecognizer *)recognizer{
    

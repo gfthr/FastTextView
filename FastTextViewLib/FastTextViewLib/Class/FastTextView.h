@@ -153,6 +153,8 @@ typedef enum {
     BOOL isInsertText;
     BOOL isFirstResponser;
     CGFloat _pragraghSpaceHeight;
+    
+    BOOL _frameChanging;
 }
 
 @property(nonatomic) UIDataDetectorTypes dataDetectorTypes; // UIDataDetectorTypeLink supported
@@ -190,6 +192,8 @@ typedef enum {
 -(void)refreshAllView;
 
 - (void)selectionChanged;
+
+-(BOOL)frameChanging;
 
 
 @end
