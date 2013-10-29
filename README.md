@@ -58,3 +58,22 @@ Install Method 2 :
 2.build
 
 that's all!
+
+中文介绍 :
+============
+FastTextView是一个富文本（Rich Text）编辑器，支持在文字中插入视图，文字输入性能极高。
+
+代码在开源代码EGOTextView（https://github.com/enormego/EGOTextView）基础上做了很大的改进（有约50%的代码改动），提高了大量文字输入的性能，这也是命名为FastTextView的原因。 
+
+主要性能如下： 
+
+1)插入文本速度很快，特别是针对大量文字的输入（进过测试，输入50万字的反应速度还是很快；而其他的文字编辑器，输入几千字就会变卡）。
+为提高文字插入的速度，作者引入了新的NSMutableAttributedString的子类FastTextStorage，任何文字的修改都只需要很少时间来重建某些文字段落，从而大大提高文字输入效率。 
+
+2)支持插入图片 
+
+3)支持插入表情 
+
+4)支持iOS 7 
+
+这也许是iOS上最好的开源富文本编辑器。 
