@@ -35,8 +35,7 @@ demo
 ![demo2](https://raw.github.com/gfthr/FastTextView/master/screenshot/demo2.png "demo2")
 
 
-
-Install
+Install Method 1 :
 ============
 1.put FastTextViewLib to the parrael directory, add  FastTextViewLib.xcodeproj to your main project
 
@@ -52,5 +51,10 @@ Install
 
 7.import framework: QuartzCore.framework,CoreText.framework,AssetsLibrary.framework,CoreGraphics.framework
 
+Install Method 2 :
+============
+1.copy  all files in FastTextViewLib 's folder Resources and Class to you project folder and add these files to your project
+
+2.build
 
 that's all!
