@@ -1,7 +1,7 @@
 FastTextView
 ============
 
-The best rich editor  (TextView) on IOS platform , should be the fastest , opensourced by  [chineseall.com](http://chineseall.com/ "http://chineseall.com/")  ,developed by gfthr (gfthr@sina.com).
+The best rich editor  (TextView) on IOS platform , should be the fastest , opensourced by  [www.chineseall.com](http://www.chineseall.com/ "http://chineseall.com/")  ,developed by gfthr (gfthr@sina.com).
 
 FastTextView is inspired by EGOTextView , and made some significant improvement to enchance peformance on large text input speed , changed about 50% code , so named new project FastTextView.
 
@@ -61,7 +61,7 @@ that's all!
 
 中文介绍 :
 ============
-FastTextView是一个富文本（Rich Text）编辑器，支持在文字中插入视图，文字输入性能极高。由[中文在线](http://chineseall.com/ "中文在线")开源，由gfthr 开发。
+FastTextView是一个富文本（Rich Text）编辑器，支持在文字中插入视图，文字输入性能极高。由[中文在线](http://www.chineseall.com/ "中文在线")开源，由gfthr 开发。
 
 代码在开源代码[EGOTextView](https://github.com/enormego/EGOTextView) 基础上做了很大的改进（有约50%的代码改动），提高了大量文字输入的性能，这也是命名为FastTextView的原因。 
 
