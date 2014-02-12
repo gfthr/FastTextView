@@ -26,4 +26,6 @@
 
 - (CGFloat)boundingHeightForWidth:(CGFloat)width;
 
+- (NSAttributedString *)stringByAddingZeroWidthSpacesAfterEmojiCharacters;
+
 @end

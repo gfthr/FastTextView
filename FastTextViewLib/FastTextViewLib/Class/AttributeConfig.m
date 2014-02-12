@@ -9,6 +9,7 @@
 #import "AttributeConfig.h"
 #import <CoreText/CoreText.h>
 #import "UIFont+TextUtil.h"
+#import "UIColor+Helper.h"
 
 
 @implementation AttributeConfig
@@ -92,11 +93,11 @@
     UIColor *strokeColor = [UIColor whiteColor]; //数据库
     if(readStyle == 0){
         //白天
-        color = [self colorWithR:36 G:36 B:36 alpha:1.0];
+        color = [UIColor colorWithR:36 G:36 B:36 alpha:1.0];
         strokeColor = [UIColor whiteColor];
     }else{
         //黑夜
-        color = [self colorWithR:94 G:102 B:106 alpha:1.0];
+        color = [UIColor colorWithR:94 G:102 B:106 alpha:1.0];
         strokeColor = [UIColor whiteColor];
     }
     
@@ -107,11 +108,6 @@
     self.attributes=dictionary;
 }
 
--(UIColor *)colorWithR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b alpha:(CGFloat)alpha{
-    CGFloat red=[NSNumber numberWithInt:r].floatValue/255;
-    CGFloat green=[NSNumber numberWithInt:g].floatValue/255;
-    CGFloat blue=[NSNumber numberWithInt:b].floatValue/255;
-    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-}
+
 @end
 

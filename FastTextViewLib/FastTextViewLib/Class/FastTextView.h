@@ -32,6 +32,8 @@
 #import "FileWrapperObject.h"
 #import "AttributeConfig.h"
 
+typedef void (^CallbackSuccessBlock)(id data);
+
 #define TILED_LAYER_MODE 1
 #define RENDER_WITH_LINEREF 1
 
@@ -149,7 +151,8 @@ typedef enum {
     double setneeddisplaytime;
     double drawrecttime;
 
-    NSString *_placeHolder;    
+    NSString *_placeHolder;
+    UIColor *_placeHolderColor;
     BOOL isInsertText;
     BOOL isFirstResponser;
     CGFloat _pragraghSpaceHeight;
@@ -179,6 +182,7 @@ typedef enum {
 
 @property(nonatomic,assign) CGFloat pragraghSpaceHeight;
 @property(nonatomic,assign) BOOL isImageSigleLine;
+@property(nonatomic,strong) UIColor *placeHolderColor;
 
 - (BOOL)hasText;
 - (void)deleteWithRange:(NSRange)range;
@@ -194,6 +198,8 @@ typedef enum {
 - (void)selectionChanged;
 
 -(BOOL)frameChanging;
+
+- (void)setAttributedString:(NSMutableAttributedString *)string block:(CallbackSuccessBlock)block;
 
 
 @end

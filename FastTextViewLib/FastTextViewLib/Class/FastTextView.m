@@ -203,6 +203,7 @@ typedef enum {
 @synthesize inputView = _inputView;
 @synthesize inputAccessoryView = _inputAccessoryView;
 @synthesize placeHolder=_placeHolder;
+@synthesize placeHolderColor=_placeHolderColor;
 @synthesize pragraghSpaceHeight=_pragraghSpaceHeight;
 
 @synthesize isImageSigleLine;
@@ -357,6 +358,13 @@ typedef enum {
     [self showPlaceHolderView];
 }
 
+
+-(void)setPlaceHolderColor:(UIColor *)placeHolderColor{
+    _placeHolderColor=placeHolderColor;
+    [self showPlaceHolderView];
+}
+
+
 -(void)showPlaceHolderView{
     if (_placeHolderView !=nil) {
         [_placeHolderView removeFromSuperview];
@@ -364,7 +372,12 @@ typedef enum {
     _placeHolderView =[[UILabel alloc]initWithFrame:CGRectMake(8, 8, 100, 20)];
     [_placeHolderView setText:_placeHolder];
     [_placeHolderView setFont:[UIFont systemFontOfSize:16]];
-    [_placeHolderView setTextColor:[UIColor lightGrayColor]];
+    if (self.placeHolderColor!=nil) {
+        [_placeHolderView setTextColor:self.placeHolderColor];
+    }else{
+        [_placeHolderView setTextColor:[UIColor colorWithR:199 G:199 B:206 alpha:1]];
+    }
+    
     _placeHolderView.backgroundColor=[UIColor clearColor];
     [self addSubview:_placeHolderView];
 }
@@ -506,6 +519,53 @@ typedef enum {
         [_caretView removeFromSuperview];
     }
 
+}
+
+
+- (void)setAttributedString:(NSMutableAttributedString *)string block:(CallbackSuccessBlock)block{
+ 
+    dispatch_queue_t parse_queue = dispatch_queue_create("com.itangyuan.setAttributedString", NULL);
+    dispatch_async(parse_queue, ^{
+        _attributedString =[[FastTextStorage alloc]initWithAttributedString:string];
+        _attributedString.pragraghSpaceHeight=self.pragraghSpaceHeight;
+        _attributedString.paragraphSize=CGSizeMake(_textContentView.frame.size.width, 0);
+        _attributedString.delegate=self;
+        
+        if (string.length==0) {
+            [self insertText:EMPTY_STRING];
+        }
+        
+        [_attributedString beginStorageEditing];
+        [_attributedString buildParagraph:_attributedString.paragraphSize.width];
+        
+        [_attributedString scanAttributes:NSMakeRange(0, _attributedString.length)];
+        
+        [_attributedString endStorageEditing];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_textContentView refreshAllView];
+            
+            
+            //if (self.attributedString.length>0 && _placeHolderView!=nil ) {
+            if ( ((self.attributedString.length==2 &&![_attributedString.string isEqualToString:EMPTY_STRING])
+                  ||self.attributedString.length!=2)
+                && _placeHolderView!=nil ) {
+                [_placeHolderView removeFromSuperview];
+                _placeHolderView=nil;
+            }
+            
+            if(self.attributedString.length==2 && [_attributedString.string isEqualToString:EMPTY_STRING]){
+                [_caretView removeFromSuperview];
+            }
+            
+            if (block!=nil) {
+                block(nil);
+            }
+        });
+        
+    });
+    dispatch_release(parse_queue);
+    
 }
 
 - (void)setAttributedString:(NSMutableAttributedString *)string {
@@ -2477,6 +2537,11 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     }
     [_textContentView refreshView];
     
+    if (_placeHolderView!=nil ) {
+        [_placeHolderView removeFromSuperview];
+        _placeHolderView=nil;
+    }
+    
     _dirty=YES;
     
 }
@@ -3558,7 +3623,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     //wq ADD for 坐标变换
     //[self setNeedsDisplayInRect:[_delegate getVisibleRect]];
     
-    [self setNeedsDisplayInRect:self.bounds];
+    [self setNeedsDisplay];//InRect:self.bounds
     //wq ADD for 坐标变换 -END
     [self setNeedsLayout];
     

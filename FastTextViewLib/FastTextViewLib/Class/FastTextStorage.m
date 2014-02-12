@@ -26,6 +26,7 @@
 
 #import "FastTextStorage.h"
 #import "NSMutableAttributedString+TextUtil.h"
+#import "NSAttributedString+TextUtil.h"
 #import "FastTextView.h"
 #import "TextAttchment.h"
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -246,8 +247,10 @@
 - (id)initWithAttributedString:(NSAttributedString *)attrStr{
     
     if ((self = [self init])) {
+        //避免coretext  emoji 的bug
+        NSAttributedString *newattrStr=[attrStr stringByAddingZeroWidthSpacesAfterEmojiCharacters];
         
-        [self setAttributedString:[[NSAttributedString alloc]initWithAttributedString:attrStr]];
+        [self setAttributedString:[[NSAttributedString alloc]initWithAttributedString:newattrStr]];
         
     }
     return self;
@@ -605,6 +608,7 @@
             NSRange range =NSRangeFromString([rangelist objectAtIndex:i]);
             NSRange addParaRange=NSMakeRange(newParagraphRange.location+range.location, range.length);
             
+            addParaRange=[self fixRangeBug:addParaRange length:self.length];
             NSAttributedString *paraAttrstring=[self attributedSubstringFromRange:addParaRange];
             
             FastTextParagraph *fastTextParagraph=[[FastTextParagraph alloc]init];
@@ -641,6 +645,8 @@
 -(void)rebuildLayer:(FastTextParagraph *)paragraph context:(CGContextRef)context{
     
     NSRange paraRange= NSMakeRange(paragraph.range.location, paragraph.range.length);
+    
+    paraRange=[self fixRangeBug:paraRange length:self.length];
     NSAttributedString *mAttributedString=[self attributedSubstringFromRange:paraRange];
     @synchronized(paragraph){
         [paragraph build:mAttributedString paragraphSizeWidth:paragraph.rect.size.width  paragraphOriginY:paragraph.rect.origin.y paraRange:paragraph.range isBuildLayer:YES context:context];
@@ -656,6 +662,8 @@
  */
 -(CTLineRef)buildCTLineRef:(FastTextLine *)fastTextLine withParagraph:(FastTextParagraph *)paragraph{    
     NSRange lineRange= NSMakeRange(paragraph.range.location+fastTextLine.range.location, fastTextLine.range.length);
+    
+    lineRange=[self fixRangeBug:lineRange length:self.length];    
     NSAttributedString *mAttributedString=[self attributedSubstringFromRange:lineRange];
     //NSLog(@"buildCTLineRef %@",mAttributedString.string);
     CTTypesetterRef mTypesetter;
@@ -664,6 +672,19 @@
     CFRelease(mTypesetter);    
     return line;
 }
+
+-(NSRange)fixRangeBug:(NSRange)range length:(NSUInteger)length{
+    //just fix bug : FastTextStorage attributedSubstringFromRange:: Out of bounds 没找到原因,先控制一下
+    NSRange fixRange=range;
+    if (range.location+range.length>length) {
+        NSLog(@"FastTextStorage attributedSubstringFromRange:: Out of bounds");
+        fixRange= NSMakeRange(range.location, length-range.location);
+    }
+    return fixRange;
+
+}
+
+
 
 
 -(BOOL)checkIntersectionWithBaseRange:(NSRange)baseRange changeRange:(NSRange)changeRange{

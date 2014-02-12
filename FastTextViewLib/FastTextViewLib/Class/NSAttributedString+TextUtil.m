@@ -15,6 +15,11 @@
 #import "NSMutableAttributedString+TextUtil.h"
 #import "FileWrapperObject.h"
 #import "FastTextView.h"
+#import "NSCharacterSet+EmojiAdditions.h"
+// MARK: Text attachment helper functions
+
+#define ZERO_WIDTH_SPACE @"\u200B"
+#define CHINESE_SPACE @"　"
 // MARK: Text attachment helper functions
 static void AttachmentRunDelegateDealloc(void *refCon) {
     CFBridgingRelease(refCon);
@@ -203,5 +208,34 @@ static CGFloat AttachmentRunDelegateGetWidth(void *refCon) {
     
 }
 
+- (NSAttributedString *)stringByAddingZeroWidthSpacesAfterEmojiCharacters {
+	__block NSMutableAttributedString *attstring = [[NSMutableAttributedString alloc] init];
+    
+	[self.string enumerateSubstringsInRange:NSMakeRange(0, self.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+		//[string appendString:substring];
+        
+		if (substringRange.length == 2) {
+			unichar hs = [substring characterAtIndex:0];
+			unichar ls = [substring characterAtIndex:1];
+			UTF32Char uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+			if ([[NSCharacterSet emojiCharacterSet] longCharacterIsMember:uc]) {
+                NSLog(@"[self.string substringWithRange:NSMakeRange(substringRange.location-1, 1)] [%@]",[self.string substringWithRange:NSMakeRange(substringRange.location-1, 1)]);
+                if (substringRange.location >0 && [[self.string substringWithRange:NSMakeRange(substringRange.location-1, 1)] isEqualToString:CHINESE_SPACE]) {
+                    [attstring appendAttributedString:[[NSAttributedString alloc]initWithString:ZERO_WIDTH_SPACE]];
+                }
+                [attstring appendAttributedString:[self attributedSubstringFromRange:substringRange]];
+                //                if (substringRange.location+substringRange.length <self.length && ![[self.string substringWithRange:NSMakeRange(substringRange.location+substringRange.length, 1)] isEqualToString:ZERO_WIDTH_SPACE]) {
+                //                    [attstring appendAttributedString:[[NSAttributedString alloc]initWithString:ZERO_WIDTH_SPACE]];
+                //                }
+                
+			}else{
+                [attstring appendAttributedString:[self attributedSubstringFromRange:substringRange]];
+            }
+		}else{
+            [attstring appendAttributedString:[self attributedSubstringFromRange:substringRange]];
+        }
+	}];
+	return [attstring copy];
+}
 
 @end

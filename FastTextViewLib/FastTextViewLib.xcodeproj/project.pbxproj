@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EBB59AF18AB287700D18C5C /* UIColor+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBB59AE18AB287700D18C5C /* UIColor+Helper.m */; };
 		5EED2E6817DD72FA0080F277 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EED2E6717DD72FA0080F277 /* Foundation.framework */; };
 		5EED2E9417DD73D80080F277 /* CAParagraphLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EED2E7D17DD73D80080F277 /* CAParagraphLayer.m */; };
 		5EED2E9517DD73D80080F277 /* ContentViewTiledLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EED2E7F17DD73D80080F277 /* ContentViewTiledLayer.m */; };
@@ -54,6 +55,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5EBB59AD18AB287700D18C5C /* UIColor+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Helper.h"; sourceTree = "<group>"; };
+		5EBB59AE18AB287700D18C5C /* UIColor+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Helper.m"; sourceTree = "<group>"; };
 		5EED2E6417DD72FA0080F277 /* libFastTextViewLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFastTextViewLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EED2E6717DD72FA0080F277 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5EED2E6B17DD72FA0080F277 /* FastTextViewLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FastTextViewLib-Prefix.pch"; sourceTree = "<group>"; };
@@ -180,6 +183,8 @@
 				5EED2E8917DD73D80080F277 /* NSMutableAttributedString+TextUtil.m */,
 				5EED2E8E17DD73D80080F277 /* TextAttchment.h */,
 				5EED2E8F17DD73D80080F277 /* TextAttchment.m */,
+				5EBB59AD18AB287700D18C5C /* UIColor+Helper.h */,
+				5EBB59AE18AB287700D18C5C /* UIColor+Helper.m */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -254,6 +259,7 @@
 				5EED2E9517DD73D80080F277 /* ContentViewTiledLayer.m in Sources */,
 				5EED2E9617DD73D80080F277 /* FastTextStorage.m in Sources */,
 				5EED2E9717DD73D80080F277 /* FastTextView.m in Sources */,
+				5EBB59AF18AB287700D18C5C /* UIColor+Helper.m in Sources */,
 				5EED2E9817DD73D80080F277 /* FileWrapperObject.m in Sources */,
 				5EED2E9917DD73D80080F277 /* NSAttributedString+TextUtil.m in Sources */,
 				5EED2E9A17DD73D80080F277 /* NSMutableAttributedString+TextUtil.m in Sources */,
