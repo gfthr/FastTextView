@@ -32,7 +32,7 @@
 #import "FileWrapperObject.h"
 #import "AttributeConfig.h"
 
-typedef void (^CallbackSuccessBlock)(id data);
+typedef void (^setAttributedStringSuccessBlock)(id data);
 
 #define TILED_LAYER_MODE 1
 #define RENDER_WITH_LINEREF 1
@@ -199,7 +199,7 @@ typedef enum {
 
 -(BOOL)frameChanging;
 
-- (void)setAttributedString:(NSMutableAttributedString *)string block:(CallbackSuccessBlock)block;
+- (void)setAttributedString:(NSMutableAttributedString *)string block:(setAttributedStringSuccessBlock)block;
 
 
 @end

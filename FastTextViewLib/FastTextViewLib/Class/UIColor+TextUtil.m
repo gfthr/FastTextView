@@ -1,15 +1,14 @@
 //
-//  UIColor+Helper.m
-//  FastTextViewLib
+//  UIColor+TextUtil.m
+//  tangyuanReader
 //
 //  Created by 王 强 on 14-2-12.
-//  Copyright (c) 2014年 wangqiang. All rights reserved.
+//  Copyright (c) 2014年 中文在线. All rights reserved.
 //
 
-#import "UIColor+Helper.h"
+#import "UIColor+TextUtil.h"
 
-@implementation UIColor (Helper)
-
+@implementation UIColor (TextUtil)
 +(UIColor *)colorWithR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b alpha:(CGFloat)alpha{
     CGFloat red=[NSNumber numberWithInt:r].floatValue/255;
     CGFloat green=[NSNumber numberWithInt:g].floatValue/255;

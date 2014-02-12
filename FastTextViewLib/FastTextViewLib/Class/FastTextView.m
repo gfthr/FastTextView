@@ -33,6 +33,7 @@
 #import "NSAttributedString+TextUtil.h"
 //#import "SlideAttachmentCell.h"
 #import "ContentViewTiledLayer.h"
+#import "UIColor+TextUtil.h"
 //#import "MemoryDebugMaster.h"
 
 NSString * const FastTextAttachmentAttributeName = @"com.itangyuan.FastTextAttachmentAttribute";
@@ -522,7 +523,7 @@ typedef enum {
 }
 
 
-- (void)setAttributedString:(NSMutableAttributedString *)string block:(CallbackSuccessBlock)block{
+- (void)setAttributedString:(NSMutableAttributedString *)string block:(setAttributedStringSuccessBlock)block{
  
     dispatch_queue_t parse_queue = dispatch_queue_create("com.itangyuan.setAttributedString", NULL);
     dispatch_async(parse_queue, ^{
