@@ -59,9 +59,7 @@ Install Method 2 :
 
 that's all!
 
-you should write you own code to export content to pdf, txt, bin, html .
 
-using FastTextView property attributedString
 
 below is example code  for export html
 ============
