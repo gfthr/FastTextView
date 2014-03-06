@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E7408D418C850780098FE24 /* NSCharacterSet+EmojiAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7408D118C850780098FE24 /* NSCharacterSet+EmojiAdditions.m */; };
+		5E7408D518C850780098FE24 /* TextParagraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7408D318C850780098FE24 /* TextParagraph.m */; };
 		5EBB59B618AB2B9F00D18C5C /* UIColor+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBB59B518AB2B9F00D18C5C /* UIColor+TextUtil.m */; };
 		5EED2E6817DD72FA0080F277 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EED2E6717DD72FA0080F277 /* Foundation.framework */; };
 		5EED2E9417DD73D80080F277 /* CAParagraphLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EED2E7D17DD73D80080F277 /* CAParagraphLayer.m */; };
@@ -55,6 +57,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E7408D018C850780098FE24 /* NSCharacterSet+EmojiAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+EmojiAdditions.h"; sourceTree = "<group>"; };
+		5E7408D118C850780098FE24 /* NSCharacterSet+EmojiAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+EmojiAdditions.m"; sourceTree = "<group>"; };
+		5E7408D218C850780098FE24 /* TextParagraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextParagraph.h; sourceTree = "<group>"; };
+		5E7408D318C850780098FE24 /* TextParagraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextParagraph.m; sourceTree = "<group>"; };
 		5EBB59B418AB2B9F00D18C5C /* UIColor+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+TextUtil.h"; sourceTree = "<group>"; };
 		5EBB59B518AB2B9F00D18C5C /* UIColor+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+TextUtil.m"; sourceTree = "<group>"; };
 		5EED2E6417DD72FA0080F277 /* libFastTextViewLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFastTextViewLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,6 +169,10 @@
 		5EED2E7B17DD73D80080F277 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				5E7408D018C850780098FE24 /* NSCharacterSet+EmojiAdditions.h */,
+				5E7408D118C850780098FE24 /* NSCharacterSet+EmojiAdditions.m */,
+				5E7408D218C850780098FE24 /* TextParagraph.h */,
+				5E7408D318C850780098FE24 /* TextParagraph.m */,
 				5EBB59B418AB2B9F00D18C5C /* UIColor+TextUtil.h */,
 				5EBB59B518AB2B9F00D18C5C /* UIColor+TextUtil.m */,
 				5EED2EFA17DDA6310080F277 /* AttributeConfig.h */,
@@ -264,7 +274,9 @@
 				5EED2E9A17DD73D80080F277 /* NSMutableAttributedString+TextUtil.m in Sources */,
 				5EED2E9D17DD73D80080F277 /* TextAttchment.m in Sources */,
 				5EED2EF317DDA1AB0080F277 /* UIFont+TextUtil.m in Sources */,
+				5E7408D518C850780098FE24 /* TextParagraph.m in Sources */,
 				5EED2EFC17DDA6320080F277 /* AttributeConfig.m in Sources */,
+				5E7408D418C850780098FE24 /* NSCharacterSet+EmojiAdditions.m in Sources */,
 				5EBB59B618AB2B9F00D18C5C /* UIColor+TextUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

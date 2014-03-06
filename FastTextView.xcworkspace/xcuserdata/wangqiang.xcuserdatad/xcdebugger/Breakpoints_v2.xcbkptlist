@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1271"
             endingLineNumber = "1271"
-            landmarkName = "-characterRangeAtPoint_:"
+            landmarkName = "-closestIndexToPoint:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -95,7 +95,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1318"
             endingLineNumber = "1318"
-            landmarkName = "-characterRangeAtIndex:"
+            landmarkName = "-characterRangeAtPoint_:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
