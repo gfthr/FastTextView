@@ -18,6 +18,7 @@
 #import "UIImage-Extensions.h"
 #import "NSAttributedString+TextUtil.h"
 #import "TextConfig.h"
+#import "TestViewController.h"
 
 #define NAVBAR_HEIGHT 44.0f
 #define TABBAR_HEIGHT 49.0f
@@ -409,6 +410,28 @@
     [super viewDidUnload];
     _textView=nil;
     _fastTextView=nil;
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setFrame:CGRectMake(0, 0, 45, 35)];
+    [backButton setTitle:@"test" forState:UIControlStateNormal];
+     
+     //setImage:[UIImage imageNamed:@"navbar_bt_back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(testButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.navigationItem.leftBarButtonItem = cancel;
+    //[self.navigationItem addLeftBarButtonItem:cancel];
+    
+}
+
+-(void)testButtonClick:(id)sender{
+    
+    NSBundle *libBundle = [NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"Test" withExtension:@"bundle"]];
+
+    TestViewController *vc=[[TestViewController alloc]initWithNibName:@"TestViewController" bundle:libBundle];
+    [self presentModalViewController:vc animated:YES];
 }
 
 - (void)dealloc {

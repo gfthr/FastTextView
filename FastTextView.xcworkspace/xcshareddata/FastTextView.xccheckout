@@ -10,29 +10,29 @@
 	<string>FastTextView</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>7F7183C5-A157-4797-8280-DFFC09A14617</key>
+		<key>F038DA5F05BC7846F6CBBFE2D9CD3AF115444EB2</key>
 		<string>https://github.com/gfthr/FastTextView.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>FastTextView.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>7F7183C5-A157-4797-8280-DFFC09A14617</key>
+		<key>F038DA5F05BC7846F6CBBFE2D9CD3AF115444EB2</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/gfthr/FastTextView.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>7F7183C5-A157-4797-8280-DFFC09A14617</string>
+	<string>F038DA5F05BC7846F6CBBFE2D9CD3AF115444EB2</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>7F7183C5-A157-4797-8280-DFFC09A14617</string>
+			<string>F038DA5F05BC7846F6CBBFE2D9CD3AF115444EB2</string>
 			<key>IDESourceControlWCCName</key>
 			<string>FastTextView</string>
 		</dict>

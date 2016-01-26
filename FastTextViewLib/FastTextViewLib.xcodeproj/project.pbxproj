@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E1A537D1C5763E8000559A7 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1A537C1C5763E8000559A7 /* TestViewController.m */; };
 		5E7408D418C850780098FE24 /* NSCharacterSet+EmojiAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7408D118C850780098FE24 /* NSCharacterSet+EmojiAdditions.m */; };
 		5E7408D518C850780098FE24 /* TextParagraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7408D318C850780098FE24 /* TextParagraph.m */; };
 		5EBB59B618AB2B9F00D18C5C /* UIColor+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBB59B518AB2B9F00D18C5C /* UIColor+TextUtil.m */; };
@@ -57,6 +58,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E1A537B1C5763E8000559A7 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		5E1A537C1C5763E8000559A7 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		5E7408D018C850780098FE24 /* NSCharacterSet+EmojiAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+EmojiAdditions.h"; sourceTree = "<group>"; };
 		5E7408D118C850780098FE24 /* NSCharacterSet+EmojiAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+EmojiAdditions.m"; sourceTree = "<group>"; };
 		5E7408D218C850780098FE24 /* TextParagraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextParagraph.h; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 		5EED2E7B17DD73D80080F277 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				5E1A537B1C5763E8000559A7 /* TestViewController.h */,
+				5E1A537C1C5763E8000559A7 /* TestViewController.m */,
 				5E7408D018C850780098FE24 /* NSCharacterSet+EmojiAdditions.h */,
 				5E7408D118C850780098FE24 /* NSCharacterSet+EmojiAdditions.m */,
 				5E7408D218C850780098FE24 /* TextParagraph.h */,
@@ -267,6 +272,7 @@
 			files = (
 				5EED2E9417DD73D80080F277 /* CAParagraphLayer.m in Sources */,
 				5EED2E9517DD73D80080F277 /* ContentViewTiledLayer.m in Sources */,
+				5E1A537D1C5763E8000559A7 /* TestViewController.m in Sources */,
 				5EED2E9617DD73D80080F277 /* FastTextStorage.m in Sources */,
 				5EED2E9717DD73D80080F277 /* FastTextView.m in Sources */,
 				5EED2E9817DD73D80080F277 /* FileWrapperObject.m in Sources */,
@@ -345,6 +351,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/FastTextViewLib.dst;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FastTextViewLib/FastTextViewLib-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
@@ -358,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/FastTextViewLib.dst;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FastTextViewLib/FastTextViewLib-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";

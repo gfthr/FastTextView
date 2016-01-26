@@ -98,7 +98,7 @@ typedef enum {
 @interface FastTextView : UIScrollView <UITextInputTraits, UITextInput,UIScrollViewDelegate,FastTextStorageDelegate> {
 @private
     NSDictionary                       *_markedTextStyle;
-    __unsafe_unretained id <UITextInputDelegate>           _inputDelegate;
+    __weak id <UITextInputDelegate>           _inputDelegate;
     UITextInputStringTokenizer         *_tokenizer;
     UITextChecker                      *_textChecker;
     UILongPressGestureRecognizer       *_longPress;    

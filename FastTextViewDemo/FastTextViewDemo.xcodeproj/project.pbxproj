@@ -93,6 +93,7 @@
 		5E2BC73518162AFB007531EB /* emotionImage.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E2BC6E018162AFB007531EB /* emotionImage.plist */; };
 		5E2BC73618162AFB007531EB /* Property List.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E2BC6E118162AFB007531EB /* Property List.plist */; };
 		5E2BC73A18164266007531EB /* EmotionAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E2BC73918164266007531EB /* EmotionAttachmentCell.m */; };
+		5EA21D0919D5706800143352 /* Test.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5EA21D0819D5706800143352 /* Test.bundle */; };
 		5EA892A4181611EB00FC8660 /* FacialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA892A2181611EB00FC8660 /* FacialView.m */; };
 		5EBD51C6181516960048E1FE /* drag-dot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EBD51BD181516960048E1FE /* drag-dot@2x.png */; };
 		5EBD51C7181516960048E1FE /* loupe-hi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EBD51BE181516960048E1FE /* loupe-hi@2x.png */; };
@@ -243,6 +244,7 @@
 		5E2BC6E118162AFB007531EB /* Property List.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Property List.plist"; sourceTree = "<group>"; };
 		5E2BC73818164266007531EB /* EmotionAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmotionAttachmentCell.h; sourceTree = "<group>"; };
 		5E2BC73918164266007531EB /* EmotionAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmotionAttachmentCell.m; sourceTree = "<group>"; };
+		5EA21D0819D5706800143352 /* Test.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Test.bundle; sourceTree = "<group>"; };
 		5EA892A2181611EB00FC8660 /* FacialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacialView.m; sourceTree = "<group>"; };
 		5EA892A3181611EB00FC8660 /* FacialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacialView.h; sourceTree = "<group>"; };
 		5EBD51BD181516960048E1FE /* drag-dot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "drag-dot@2x.png"; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 		5EED2E3E17DD72E50080F277 /* FastTextViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				5EA21D0819D5706800143352 /* Test.bundle */,
 				5E2BC73818164266007531EB /* EmotionAttachmentCell.h */,
 				5E2BC73918164266007531EB /* EmotionAttachmentCell.m */,
 				5E2BC68C18162AFB007531EB /* emotion */,
@@ -701,6 +704,7 @@
 				5EBD51E018151E7E0048E1FE /* fontNameMark.png in Resources */,
 				5E2BC70218162AFB007531EB /* emotion37.png in Resources */,
 				5E2BC6ED18162AFB007531EB /* emotion18.png in Resources */,
+				5EA21D0919D5706800143352 /* Test.bundle in Resources */,
 				5E2BC6FA18162AFB007531EB /* emotion3.png in Resources */,
 				5E2BC72A18162AFB007531EB /* emotion73.png in Resources */,
 				5E2BC71818162AFB007531EB /* emotion57.png in Resources */,
@@ -833,13 +837,14 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FastTextViewDemo/FastTextViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "FastTextViewDemo/FastTextViewDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b9921850-731f-417d-bc93-3ad2e294b49d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -849,13 +854,14 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FastTextViewDemo/FastTextViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "FastTextViewDemo/FastTextViewDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b9921850-731f-417d-bc93-3ad2e294b49d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
